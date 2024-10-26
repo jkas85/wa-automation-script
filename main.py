@@ -4,7 +4,6 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 directory_to_watch = os.path.join(os.path.dirname(__file__), "pdf")
@@ -24,7 +23,6 @@ def setup_whatsapp():
 
 
 def send_file_via_whatsapp(driver, file_path):
-    # Locate the group chat
     search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true" and @data-tab="3"]')
     search_box.click()
     search_box.send_keys(whatsapp_group_name)
@@ -32,7 +30,6 @@ def send_file_via_whatsapp(driver, file_path):
     search_box.send_keys(Keys.ENTER)
     time.sleep(1)
 
-    # Attach the file
     attachment_box = driver.find_element(By.XPATH, '//span[@data-icon="plus"]')
     attachment_box.click()
     
@@ -55,15 +52,13 @@ class PDFUpdateHandler(FileSystemEventHandler):
         if event.src_path.endswith(pdf_file):
             current_mod_time = os.path.getmtime(event.src_path)
             
-            # Check if this is a new modification
             if not self.last_modified or self.last_modified < current_mod_time:
                 self.last_modified = current_mod_time
                 print(f"Detected update for {pdf_file}. Sending via WhatsApp...")
                 send_file_via_whatsapp(self.driver, event.src_path)
 
-# Main Function to Set Up Monitoring
 def monitor_directory():
-    driver = setup_whatsapp()  # Set up WhatsApp Web in browser
+    driver = setup_whatsapp()
 
     event_handler = PDFUpdateHandler(driver)
     observer = Observer()
@@ -71,10 +66,10 @@ def monitor_directory():
     
     observer.start()
     print(f"Monitoring directory: {directory_to_watch} for changes to {pdf_file}...")
-
+    
     try:
         while True:
-            time.sleep(1)  # Keep the script running
+            time.sleep(1) 
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
