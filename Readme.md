@@ -8,6 +8,10 @@ When both is installed you need to run the following commands:
 ```bash
 pip install watchdog selenium
 ```
+or
+```bash
+pip install -r requirements.txt
+```
 
 - watchdog is needed to monitor the file and react to changes.
 - selenium is used to navigate through whatsapp web and select the correct elemnts via the script
