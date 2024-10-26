@@ -1,7 +1,8 @@
 ### Requirements
 
-In order to run this script you need to have python(3.x) installed. \
-You also need pip (python package manager)
+In order to run this script you need to have:
+- python(3.x) installed
+- pip (python package manager)
 
 When both is installed you need to run the following commands:
 
